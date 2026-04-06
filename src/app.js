@@ -27,14 +27,13 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({extended: true}))
 app.use(express.json());
+const isProduction = process.env.NODE_ENV === "production";
 if (isProduction) {
     app.set("trust proxy", 1)
 }
 
 app.use(session);
 app.use(flash());
-
-const isProduction = process.env.NODE_ENV === "production";
 
 app.use((req, res, next) => {
     console.log(req.session, req.session.flash)
