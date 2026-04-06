@@ -1,5 +1,9 @@
-import express from "express";
+import { configDotenv } from "dotenv";
 import path, {dirname} from "path"
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+configDotenv({ path: path.join(__dirname, ".env") });
+import express from "express";
 import { fileURLToPath } from "url";
 import ejsMate from "ejs-mate"
 import {homeRouter} from "../routes/home/homeRoute.js";
@@ -16,8 +20,6 @@ import csurf from "csurf";
 const app = express();
 const csurfProtection = csurf()
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 app.engine("ejs", ejsMate)
 app.set("view engine", "ejs");
@@ -29,6 +31,11 @@ app.use(express.json())
 app.use(session);
 app.use(flash());
 
+const isProduction = process.env.NODE_ENV === "production";
+
+if (isProduction) {
+    app.set("trust proxy", 1)
+}
 app.use((req, res, next) => {
     console.log(req.session, req.session.flash)
     res.locals.css = "";
