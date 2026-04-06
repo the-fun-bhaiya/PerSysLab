@@ -43,6 +43,7 @@ export const registerPost = async (req, res) => {
 
 export const registerGet = (req, res) =>
   res.render("user/login/loginForm", {
+    endpoint: "register",
     title: `Sign Up | PerSysLab`,
     css: `form/form`,
     js: [`form/form`],
@@ -50,6 +51,7 @@ export const registerGet = (req, res) =>
 
 export const loginGet = (req, res) =>
   res.render("user/login/loginForm", {
+    endpoint: "login",
     login: true,
     title: `Login | PerSysLab`,
     css: `form/form`,
