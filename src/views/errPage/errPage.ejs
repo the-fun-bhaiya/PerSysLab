@@ -1,0 +1,22 @@
+<% layout("layout/boilerplate") -%>
+ <nav class="psl-navbar sticky-top">
+   <div class="container container-fluid">
+     <a href="/" class="h4 mb-0 text-white fw-bold">PerSysLab</a>
+     <div class="d-flex align-items-center">
+       <a href="/#features" class="me-3 hide-on-mobile">Features</a>
+       <a href="/user/login" class="me-3">Login</a>
+       <a href="/user/register" class="psl-btn psl-btn-accent">Get Started</a>
+     </div>
+   </div>
+ </nav>
+
+  <main class="error-section">
+    <div class="psl-glass-card">
+      <div class="error-text m-2">
+        <%= msg %>
+      </div>
+      <a href="<%= btnLink %>" class="psl-btn psl-btn-primary mb-2 m-2 p-2">
+        <%= btnName %>
+      </a>
+    </div>
+  </main>

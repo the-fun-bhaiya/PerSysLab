@@ -1,0 +1,27 @@
+{
+  "name": "persyslab",
+  "version": "1.0.0",
+  "description": "\"peri peri sss\"",
+  "license": "ISC",
+  "author": "\"oye-hoye\"",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "\"bla-blah do it\"",
+    "start": "node src/app.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "connect-flash": "^0.1.1",
+    "csurf": "^1.11.0",
+    "dotenv": "^17.3.1",
+    "ejs": "^5.0.1",
+    "ejs-mate": "^4.0.0",
+    "express": "^5.2.1",
+    "express-mysql-session": "^3.0.3",
+    "express-session": "^1.19.0",
+    "joi": "^18.1.1",
+    "mysql2": "^3.20.0",
+    "sweetalert2": "^11.26.24"
+  }
+}

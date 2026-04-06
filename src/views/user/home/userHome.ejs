@@ -1,0 +1,222 @@
+<% layout("layout/boilerplate") -%>
+<% block('meta').append(`<meta name="csrf-token" content="${csrfToken}" />`) %>
+<% block('meta').append(`<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>`) %>
+  <%
+    const avgMood = locals.averageMood || '';
+  %>
+  <div class="psl-hero-wrapper">
+  <nav class="psl-navbar">
+    <div class="container-fluid px-3 px-lg-4 py-3 d-flex justify-content-between align-items-center flex-wrap gap-3">
+      <a href="/" class="h4 mb-0 text-white text-decoration-none fw-bold d-inline-flex align-items-center gap-2">
+        <i class="fas fa-microchip"></i>
+        <span>PerSysLab</span>
+      </a>
+
+      <div class="d-flex align-items-center gap-2 gap-md-4 flex-wrap">
+        <a href="/user/dashboard" class="nav-link-soft fw-medium" style="color: var(--psl-color-accent)">Dashboard</a>
+        <a href="/user/progress" class="nav-link-soft">Progress</a>
+        <form method="POST" action="/user/logout">
+          <input id="oohlala" type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button class="psl-btn psl-btn-primary psl-glass-btn" type="submit">Logout</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <section class="psl-hero mb-4 mb-lg-5">
+    <div class="psl-hero-card position-relative p-4 p-md-5 psl-fade-up">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-8">
+          <div class="d-inline-flex align-items-center gap-2 psl-stat-pill mb-3">
+            <i class="fa-solid fa-wave-square"></i>
+            <span class="small fw-semibold text-secondary">Personal state tracking</span>
+          </div>
+  
+          <h1 class="display-6 fw-bold mb-3" style="color: var(--psl-color-primary)">
+            Welcome back, <%= username ? username : 'Explorer' %>.
+          </h1>
+  
+          <p class="lead mb-0" style="color: var(--psl-text-light)">
+            Your system is online. Let’s calibrate your state for today and keep your progress aligned.
+          </p>
+        </div>
+  
+        <div class="col-lg-4">
+          <div class="psl-kpi p-3 p-md-4">
+            <div class="small text-uppercase fw-semibold text-muted mb-2">Current baseline</div>
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <div class="h4 fw-bold mb-1" style="color: var(--psl-color-primary)">
+                  <span class="psl-mood psl-mood-<%= avgMood ? avgMood.toLowerCase() : 'neutral' %>">
+                    <%= avgMood || 'Neutral' %>
+                  </span>
+                </div>
+                <div class="small psl-subtle">Recent trend average</div>
+              </div>
+              <div class="fs-1 opacity-25">
+                <i class="fa-solid fa-chart-simple"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
+  <main class="container py-4 py-lg-5">
+    <div class="psl-deck-wrapper">
+    <section class="row justify-content-center mb-5">
+      <div class="col-lg-8">
+        <div class="psl-mood-shell">
+          <div class="psl-mood-panel p-4 p-md-5">
+
+            <form id="moodForm">
+              <div class="text-center mb-4">
+                <h3 class="h5 fw-bold mb-2 psl-section-title"><%= askFeeling() %></h3>
+                <p class="small psl-subtle mb-0">Choose one state and optionally attach a few notes.</p>
+              </div>
+
+              <div class="d-flex flex-wrap justify-content-center gap-3 mb-4">
+                <% moods.forEach(mood => { %>
+                <div class="mood-selector">
+                  <input type="radio" name="mood" id="mood_<%= mood %>" value="<%= mood %>" class="mood-radio-input" onclick="giveResponse('<%= mood %>')">
+                  <label for="mood_<%= mood %>" class="mood-radio-label">
+                    <span class="psl-mood psl-mood-<%= mood.toLowerCase() %> px-3 py-2">
+                      <%= mood %>
+                    </span>
+                  </label>
+                </div>
+                <% }) %>
+              </div>
+
+              <div class="text-center mb-4">
+                <div class="psl-soft-divider mb-3"></div>
+                <p id="responseLineText" class="fst-italic mb-0" style="min-height: 24px; color: var(--psl-text-light);">
+                  
+                </p>
+              </div>
+
+              <div class="mb-4">
+                <label for="moodNote" class="form-label text-uppercase small fw-bold text-muted">
+                  Attach Context (Optional)
+                </label>
+                <textarea name="moodNote" maxlength="200" id="moodNote" class="form-control psl-input" rows="4" placeholder="Whatever is occupying your mind today, it is valid. Leave a few thoughts here if it helps..." style="background: rgba(255,255,255,0.68); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);"></textarea>
+              </div>
+
+              <button type="button" id="addMood" class="psl-btn psl-btn-primary w-100 py-3 fw-bold shadow-sm">
+                Add Today's Adventure
+              </button>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <section class="text-center mb-4 mb-lg-5">
+      <div class="psl-kpi d-inline-flex align-items-center gap-2 px-3 py-2">
+        <span class="small text-muted">Recent cycle baseline:</span>
+        <span class="psl-mood psl-mood-<%= avgMood ? avgMood.toLowerCase() : 'neutral' %> ms-1">
+          <%= avgMood || 'Neutral' %>
+        </span>
+      </div>
+    </section>
+    <div id="history-section" class="psl-deck-wrapper">
+      <section class="history-card psl-card p-4 p-md-5 mb-5 shadow-sm border-0">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+          <div>
+            <h2 class="h5 fw-bold mb-1">System Archives</h2>
+            <p class="small text-muted mb-0">Review past states and identify behavioral trends.</p>
+          </div>
+
+          <div class="btn-group psl-toggle-group" role="group" aria-label="View toggle">
+            <input type="radio" class="btn-check" name="viewToggle" id="toggleHistory" autocomplete="off" checked onchange="switchLogView('history')">
+            <label class="btn btn-outline-secondary px-4" for="toggleHistory">
+              <i class="fas fa-list me-2"></i>History
+            </label>
+
+            <input type="radio" class="btn-check" name="viewToggle" id="toggleChart" autocomplete="off" onchange="switchLogView('chart')">
+            <label class="btn btn-outline-secondary px-4" for="toggleChart">
+              <i class="fas fa-chart-area me-2"></i>Chart
+            </label>
+          </div>
+        </div>
+
+        <div id="viewHistory" class="table-responsive psl-table-wrap text-center">
+          <table id="historyTable" class="d-none table table-hover align-middle mb-0 psl-table">
+            <thead>
+              <tr>
+                <th scope="col" class="fw-semibold text-uppercase small text-muted">Date</th>
+                <th scope="col" class="fw-semibold text-uppercase small text-muted">State</th>
+                <th scope="col" class="fw-semibold text-uppercase small text-muted">Context Note</th>
+                <th scope="col" class="fw-semibold text-uppercase small text-muted"></th>
+                <th scope="col" class="fw-semibold text-uppercase small text-muted"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% history.forEach(h => { %>
+                <tr data-mood-id="<%= h.id %>">
+                  <td class="text-nowrap text-secondary small"><%= h.date %></td>
+                  <td><span class="mood-data psl-mood psl-mood-<%= h.mood %>"><%= h.mood %></span></td>
+                  <td class="text-muted small"><%= h.note %></td>
+                  <td class="text-muted small">
+                      <span class="icon-swap">
+                        <i class="fa-regular fa-trash-can icon-default"></i>
+                        <i class="fa-solid fa-trash-can icon-hover deletePopupBtn"></i>
+                      </span>
+                  </td>
+                  <td class="text-muted small">
+                    <span class="icon-swap" id="editMood">
+                      <i class="fa-solid fa-pen icon-default pt-1"></i>
+                      <i class="icon-hover fa-solid fa-pen-to-square pt-1 editBtn"></i>
+                    </span>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+
+          <div class="py-4" id="historyPlaceholder">
+            <i class="fa-solid fa-rectangle-history fa-3x text-muted opacity-25 mb-3"></i>
+            <h4 class="h6 text-secondary fw-bold">No history yet...</h4>
+            <p class="text-muted small mx-auto mb-0" style="max-width: 400px;">
+              ..But as you continue to log, beautiful data will show up here.
+            </p>
+          </div>
+        </div>
+
+        <div id="viewChart" class="d-none text-center py-5">
+          <div class="py-4" id="chartPlaceholder">
+            <i class="fas fa-chart-pie fa-3x text-muted opacity-25 mb-3"></i>
+            <h4 class="h6 text-secondary fw-bold">Visualizations Initializing...</h4>
+            <p class="text-muted small mx-auto mb-0" style="max-width: 400px;">
+              And that beautiful data will be Visualized Here.
+            </p>
+          </div>
+          <div id="chartWrapper" class="py-4 text-center d-flex justify-content-center align-items-center">
+            <canvas id="moodPie" class="d-none" ></canvas>
+            <canvas id="moodBar" class="d-none" ></canvas>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="mt-auto psl-footer">
+    <div class="container py-4">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+        <div class="text-muted small">
+          &copy; 2026 PerSysLab. Your data is your own.
+        </div>
+        <div class="d-flex gap-4">
+          <a href="https://github.com" class="text-secondary text-decoration-none transition-all" target="_blank" rel="noopener">
+            <i class="fab fa-github fa-lg"></i>
+          </a>
+          <a href="https://discord.com" class="text-secondary text-decoration-none transition-all" target="_blank" rel="noopener">
+            <i class="fab fa-discord fa-lg"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>

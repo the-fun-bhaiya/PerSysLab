@@ -1,0 +1,23 @@
+.error-section {
+  background: url("/assets/background/errBg.png") no-repeat center center;
+  background-size: cover;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;   /* push content to the top */
+  align-items: flex-end;         /* push content to the right */
+  text-align: right;
+  padding: 2rem;
+  padding-top: 5rem;   
+}
+
+.error-section{background-size:cover;background-position:center;min-height:100vh;position:relative;padding:1.5rem}
+.error-section .error-panel{max-width:420px;margin-left:auto;margin-top:1.5rem;background:rgba(255,255,255,.9);backdrop-filter:blur(8px);padding:1.5rem 2rem;border-radius:var(--psl-radius);box-shadow:var(--psl-shadow);text-align:right}
+
+
+.error-text {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--psl-text-main);
+  margin-bottom: 1.5rem;
+}
