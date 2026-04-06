@@ -64,7 +64,9 @@ app.use((req, res) => {
     const msgObj = {
         msg: "looks like you have lost, let's get you home", 
         btnLink: "/", 
-        btnName: "Home. Sweet Home."
+        btnName: "Home. Sweet Home.",
+        title: "Uh..Ohhh",
+        css: `err/errPage`
     };
     res.render("errPage/errPage", msgObj);
 })

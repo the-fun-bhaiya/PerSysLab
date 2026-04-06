@@ -14,6 +14,15 @@ export const globalErr = (err, req, res, next) => {
   const isProduction = process.env.NODE_ENV === "production"
   if (!isProduction) {
     console.log(err.stack);
+    const msgObj = {
+      msg: def.msg,
+      btnLink: def.link,
+      btnName: def.btn,
+      title: "Uh..Ohhh",
+      css: `err/errPage`,
+    };
+    res.render("errPage/errPage", msgObj);
+    return;
   }
   const msgObj = {
     msg: err.msg,
