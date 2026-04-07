@@ -15,16 +15,20 @@
       false,
     );
   });
+  const eye = document.getElementById("eye");
   const passwordInput = document.getElementById("password");
   const toggleIcon = document.getElementById("toggleIcon");
 
-  if (passwordInput.type === "password") {
-    passwordInput.type = "text";
-    toggleIcon.classList.replace("fa-eye", "fa-eye-slash");
-  } else {
-    passwordInput.type = "password";
-    toggleIcon.classList.replace("fa-eye-slash", "fa-eye");
-  }
+  eye.addEventListener("click", () => {
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      toggleIcon.classList.replace("fa-eye", "fa-eye-slash");
+    } else {
+      passwordInput.type = "password";
+      toggleIcon.classList.replace("fa-eye-slash", "fa-eye");
+    }
+  });
+
   const submitBtn = document.querySelector("#submitBtn");
   document
     .querySelector("#form")
