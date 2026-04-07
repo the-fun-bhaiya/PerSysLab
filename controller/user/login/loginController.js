@@ -11,7 +11,7 @@ export const registerPost = async (req, res) => {
   if (error) {
     return res.json({ msg: error.details[0].message, msgType: "error" });
   }
-  const selectQuery = `SELECT username FROM USERS WHERE username = ?`;
+  const selectQuery = `SELECT username FROM users WHERE username = ?`;
   const [found] = await pool.execute(selectQuery, [username]);
   console.log(found);
   if (found.length > 0) {
