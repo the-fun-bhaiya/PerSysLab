@@ -1,4 +1,8 @@
 export const globalErr = (err, req, res, next) => {
+  if (res.headersSent) {
+    return next(err);
+  }
+
   const def = {
     msg: "Something went wrong.",
     btnLink: "/",
