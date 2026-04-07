@@ -69,22 +69,28 @@ export const loginPost = async (req, res) => {
   try {
     const selectQuery = `SELECT password FROM USERS WHERE username = ?`;
     const [found] = await pool.execute(selectQuery, [username]);
+    if (found.length <= 0) {
+      return res.json({
+        msg: "I searched the whole city :( could't find your lab. Check Username Please OR Create an Account",
+        msgType: "error",
+      });
+    }
+    const haveAccess = await passwordFunc(
+      "compare",
+      password,
+      found[0].password,
+    );
+    if (!haveAccess)
+      return res.json({
+        msg: "Oops! did you got a typo in your password? Please check again",
+        msgType: "error",
+      });
   } catch (err) {
     return res.json({
       msg: "owww! Sorry, I got a sprain, let's try that in a bit",
-      msgType: "error"
-    })
-  }
-  
-  console.log(found);
-  if (found.length <= 0) {
-    return res.json({
-      msg: "I searched the whole city :( could't find your lab. Check Username Please OR Create an Account",
       msgType: "error",
     });
   }
-  const haveAccess = await passwordFunc("compare", password, found[0].password);
-  if (!haveAccess) return res.json({msg: "Oops! did you got a typo in your password? Please check again", msgType: "error"})
   try {
     req.session.username = username;
     req.flash("success", `Welcome Home :D ${username}`);
