@@ -14,6 +14,12 @@ export const globalErr = (err, req, res, next) => {
   const isProduction = process.env.NODE_ENV === "production"
   if (!isProduction) {
     console.log(err.stack);
+    if (req.xhr || req.headers.accept?.includes("application/json")) {
+      return res.status(err.statusCode || 500).json({
+        success: false,
+        message: err.msg || def.msg,
+      });
+    }
     const msgObj = {
       msg: def.msg,
       btnLink: def.link,
@@ -23,6 +29,12 @@ export const globalErr = (err, req, res, next) => {
     };
     res.render("errPage/errPage", msgObj);
     return;
+  }
+  if (req.xhr || req.headers.accept?.includes("application/json")) {
+    return res.status(err.statusCode || 500).json({
+      success: false,
+      message: err.msg || def.msg,
+    });
   }
   const msgObj = {
     msg: err.msg,
