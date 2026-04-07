@@ -66,8 +66,16 @@ export const loginPost = async (req, res) => {
   if (error) {
     return res.json({ msg: error.details[0].message, msgType: "error" });
   }
-  const selectQuery = `SELECT password FROM USERS WHERE username = ?`;
-  const [found] = await pool.execute(selectQuery, [username]);
+  try {
+    const selectQuery = `SELECT password FROM USERS WHERE username = ?`;
+    const [found] = await pool.execute(selectQuery, [username]);
+  } catch (err) {
+    return res.json({
+      msg: "owww! Sorry, I got a sprain, let's try that in a bit",
+      msgType: "error"
+    })
+  }
+  
   console.log(found);
   if (found.length <= 0) {
     return res.json({
