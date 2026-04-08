@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/css/base/base.css">
-    <% if (css) { %>
+    <% if (typeof css !=== "undefined") { %>
       <link rel="stylesheet" href="/css/<%= css %>.css">
     <% } %>
     <title><%= title %></title>
@@ -28,7 +28,7 @@
         showPSLToast('<%= (typeof msgType == "undefined") ? "info" : msgType %>', "<%= msg %>")
       </script>
     <% } %>
-    <% if (js) { %>
+    <% if (typeof js !=== "undefined") { %>
       <% js.forEach(js => { %>       
         <script src="/js/<%= js %>.js"></script>
       <% }) %>
