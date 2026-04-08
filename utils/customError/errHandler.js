@@ -4,7 +4,7 @@ export const globalErr = (err, req, res, next) => {
   }
 
   const def = {
-    msg: "Something went wrong.",
+    msg: "Oo-oops Something went terribly wrong.",
     btnLink: "/",
     btnName: "Home",
   };
@@ -23,7 +23,7 @@ export const globalErr = (err, req, res, next) => {
   }
 
   const msgObj = {
-    msg: isProduction ? err.msg : def.msg,
+    msg: err.msg || def.msg,
     btnLink: err.btnLink || def.btnLink,
     btnName: err.btnName || def.btnName,
     title: "Uh..Ohhh",
