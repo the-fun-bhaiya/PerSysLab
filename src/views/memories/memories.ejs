@@ -107,13 +107,13 @@
     <h1>मस्ती वाली गैलरी 🎉</h1>
 
     <div class="grid">
-        <% const funnyTexts=[ "ये फोटो तो swag में है 😎" , "कौन है ये superstar ⭐", "इतनी खुशी क्यों भाई 🤣" ]; %>
+        <% const funnyTexts=[ "ये फोटो तो swag में है 😎" , "और SST में हम पहला चैप्टर कर लेंगे", "और SST में हम पहला चैप्टर कर लेंगे", "कौन है ये superstar ⭐", "कल हम गणित में 2.1 पूरा कर लेंगे 😜", "इतनी खुशी क्यों भाई 🤣", "कल हम गणित में 2.1 पूरा कर लेंगे 😜" ]; %>
 
             <% images.forEach((img, i)=> { %>
                 <div class="card" onclick="openViewer('<%= img %>')">
                     <img src="<%= img %>" />
                     <div class="text">
-                        <%= funnyTexts[Math.floor(Math.random() * funnyTexts.length)] %>
+                        <%= funnyTexts[Math.floor(Math.random() * funnyTexts.length)] %> 
                     </div>
                 </div>
                 <% }) %>
