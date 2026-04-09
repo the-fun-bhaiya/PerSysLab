@@ -11,6 +11,7 @@ import session from "../utils/session/session.js";
 import { loginRouter } from "../routes/user/login/loginRoute.js";
 import { globalErr } from "../utils/customError/errHandler.js";
 import { checkSession } from "../utils/session/sessionChecker.js";
+import memoRouter from "../routes/memories/memories.js";
 import flash from "connect-flash";
 import { userHomeRouter } from "../routes/user/home/userHomeRoute.js";
 import moodRouter from "../routes/user/mood/mood.js";
@@ -58,6 +59,7 @@ app.use("/user", loginRouter);
 app.use("/user/home", csurfProtection, checkSession, userHomeRouter);
 app.use("/user/mood", csurfProtection, moodRouter);
 app.use("/user/logout", csurfProtection, logoutRouter);
+app.use("/memories", memoRouter);
 
 app.use((req, res) => {
     const msgObj = {
