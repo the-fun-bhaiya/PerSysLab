@@ -1,6 +1,5 @@
 import bcrypt from "bcrypt";
 
-
 /**
  * password hasher and comparer
  * @param {string} funcType - type of the function hash or compare.
@@ -10,7 +9,8 @@ import bcrypt from "bcrypt";
  */
 const passwordFunc = async (funcType, password, hashedPassword) => {
   if (funcType == "hash") return await bcrypt.hash(password, 10);
-  if (funcType == "compare") return await bcrypt.compare(password, hashedPassword);
-}
+  if (funcType == "compare")
+    return await bcrypt.compare(password, hashedPassword);
+};
 
 export default passwordFunc;
