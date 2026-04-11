@@ -75,6 +75,7 @@
             });
 
             if (studentClass) {
+                console.log(studentClass)
                 // Step 2: Dynamic Text based on Class
                 let questionTitle = studentClass === '5' ? 'पासवर्ड क्या है?' : 'हम अभी कौनसी किताब पढ़ रहे हैं?';
                 let inputPlaceholder = studentClass === '5' ? 'सीक्रेट पासवर्ड यहाँ लिखें...' : 'किताब का नाम...';
@@ -86,24 +87,30 @@
                     showCancelButton: true,
                     confirmButtonText: 'खोलें 🚀',
                     cancelButtonText: 'रद्द करें',
+                    inputValidator: (value) => {
+                        if (!value) return 'kitab ka naam to dalo!?'
+                    },
                     confirmButtonColor: '#ff6b6b'
                 });
 
                 if (answer) {
+                    console.log(answer)
                     // Step 3: Send request to /memories (Backend should expect POST and return JSON)
                     try {
-                        const response = await fetch('/memories/auth', { // Use a specific auth route or modify as per your backend
+                        console.log("haan")
+                        const response = await fetch('/memories/', { // Use a specific auth route or modify as per your backend
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ class: studentClass, answer: answer.toLowerCase() })
+                            body: JSON.stringify({ password: answer.toLowerCase() })
                         });
 
                         const result = await response.json();
-
+                        console.dir(result);
                         if (result.success) {
-                            // If correct, redirect to memories page
-                            window.location.href = '/memories';
+                            console.log("hmmm suc")
+                            window.location.href = '/memories/auth';
                         } else {
+                            console.log("hm er")
                             // Playful Error Handling
                             let hintMsg = studentClass === '5'
                                 ? 'गड़बड़ हो गई! हिंट: सभी छोटे अक्षर टाइप करो और लगातार लिखो बिना स्पेस के।'
