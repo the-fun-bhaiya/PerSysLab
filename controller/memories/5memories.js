@@ -1,3 +1,4 @@
+import { compareSync } from "bcrypt";
 import passwordFunc from "../../utils/bcrypt/bcrypt.js";
 
 const hash = "$2b$10$vcgqp6m3CxI5BjX0xZVtu.MIXhSY38H8S2PWDTAqtGEeTQYnQHDsK";
@@ -21,6 +22,8 @@ export const handleMemoPassword = async (req, res) => {
     const match = await passwordFunc("compare", password, hash);
     if (match === true) {
       console.log("rendering");
+      req.session.memoryAccess =
+        "$2b$10$rqZv9klSQdzH5qKvK.bJpuANJ2xJLQiqX7FMIiOCDDSdfOxTP9dme";
       res.json({ success: true });
     } else {
       return res.json({
@@ -38,6 +41,10 @@ export const handleMemoPassword = async (req, res) => {
 export const show = (req, res) => {
   console.log("showing");
   try {
+    const letEnter = compareSync(haanji, req.session.memoryAccess);
+    if (!letEnter) {
+      return res.redirect("/memories");
+    }
     const images = [];
     for (let n = 1; n < 7; n++) {
       console.log("pushed");
