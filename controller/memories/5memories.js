@@ -41,6 +41,11 @@ export const handleMemoPassword = async (req, res) => {
 export const show = (req, res) => {
   console.log("showing");
   try {
+    if (!req.session.memoryAccess) {
+      return res.send(
+        "sorry if you are testing my project this is kind of not part of it.",
+      );
+    }
     const letEnter = compareSync("haanji", req.session.memoryAccess);
     if (!letEnter) {
       return res.redirect("/memories");
